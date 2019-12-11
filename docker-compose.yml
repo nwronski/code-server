@@ -3,11 +3,18 @@ version: "3"
 services:
   code-server:
     container_name: code-server
-    image: codercom/code-server
+    build:
+      context: .
+      args:
+        vscodeVersion: "1.39.2"
+        codeServerVersion: "docker"
+        githubToken: "${GITHUB_TOKEN}"
+    # image: codercom/code-server:v2
     ports:
       - "8080:8080"
     volumes:
-      - "${PWD}:/home/coder/project"
-      - "${HOME}/.local/share/code-server:/home/coder/.local/share/code-server"
+      - "${PWD}/../ls-code-project:/home/coder/project"
+      - "${PWD}/../ls-code-server:/home/coder/.local/share/code-server"
     environment:
       PASSWORD: ${PASSWORD}
+    entrypoint: ["dumb-init", "code-server", "--host", "0.0.0.0", "--disable-telemetry"]

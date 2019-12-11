@@ -34,7 +34,14 @@ RUN apt-get update && apt-get install -y \
 	vim \
 	curl \
 	wget \
-  && rm -rf /var/lib/apt/lists/*
+	&& rm -rf /var/lib/apt/lists/*
+
+# Node for Ubuntu
+RUN curl --silent --location https://deb.nodesource.com/setup_10.x | sudo bash -
+RUN apt-get install -y nodejs
+# Python 3 for Ubuntu
+RUN apt-get install -y python3-distutils python3-pip \
+	&& pip3 install pylint
 
 RUN locale-gen en_US.UTF-8
 # We cannot use update-locale because docker will not use the env variables
